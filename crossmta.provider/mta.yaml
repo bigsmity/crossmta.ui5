@@ -1,0 +1,40 @@
+ID: crossmta.provider
+_schema-version: '2.1'
+version: 0.0.1
+modules:
+  - name: provider
+    type: html5
+    path: provider
+    properties:
+      CORS:
+        - uriPattern: .
+          allowedMethods:
+            - GET
+            - POST
+          allowedOrigin:
+            - host: '*.ondemand.com'
+    parameters:
+      disk-quota: 512M
+      memory: 256M
+    build-parameters:
+      builder: grunt
+    requires:
+      - name: uaa_crossmta.provider
+      - name: dest_crossmta.provider
+    provides:
+      - name: provider-ref
+        public: true
+        properties: 
+          url: '${default-url}'
+resources:
+  - name: uaa_crossmta.provider
+    parameters:
+      path: ./xs-security.json
+      service-plan: application
+      service: xsuaa
+    type: org.cloudfoundry.managed-service
+  - name: dest_crossmta.provider
+    parameters:
+      service-plan: lite
+      service: destination
+    type: org.cloudfoundry.managed-service

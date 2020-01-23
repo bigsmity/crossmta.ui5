@@ -1,0 +1,47 @@
+ID: crossmta.consumer
+_schema-version: '2.1'
+version: 0.0.1
+modules:
+  - name: consumer
+    type: html5
+    path: consumer
+    properties:
+      CORS:
+        - uriPattern: .
+          allowedMethods:
+            - GET
+            - POST
+          allowedOrigin:
+            - host: '*.ondemand.com'
+    parameters:
+      disk-quota: 512M
+      memory: 256M
+    build-parameters:
+      builder: grunt
+    requires:
+      - name: uaa_crossmta.consumer
+      - name: dest_crossmta.consumer
+      - name: provider-lib
+        group: destinations
+        properties:
+          name: provider-dest
+          url: '~{url}/provider'
+          forwardAuthToken: true
+resources:
+  - name: uaa_crossmta.consumer
+    parameters:
+      path: ./xs-security.json
+      service-plan: application
+      service: xsuaa
+    type: org.cloudfoundry.managed-service
+  - name: dest_crossmta.consumer
+    parameters:
+      service-plan: lite
+      service: destination
+    type: org.cloudfoundry.managed-service
+  - name: provider-lib
+    type: configuration
+    parameters:
+      provider-nid: mta
+      provider-id: crossmta.provider:provider-ref
+      version: '>=0.0.1'
