@@ -1,2 +1,2 @@
 # crossmta.ui5
-Cross MTA UI5 Library Example
+Cross-MTA Dependencies. Custom UI5 Library Reference Example.
